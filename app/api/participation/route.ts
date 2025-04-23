@@ -6,7 +6,7 @@ import {
   getActiveStakeHistory 
 } from '@/lib/solana';
 import { ApiResponse, ParticipationData } from '@/types/participation-type';
-
+export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 export const revalidate = 30;
 

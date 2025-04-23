@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { addStakingRecord } from "@/lib/stakingDB";
 import { Connection } from "@solana/web3.js";
-
+export const runtime = 'edge';
 export async function GET(req: Request) {
   // Verify secret (for security)
   if (

@@ -1,7 +1,7 @@
 // app/api/stats/stake-distribution/route.ts
 
 import { NextResponse } from 'next/server'
-
+export const runtime = 'edge';
 const HELIUS_RPC_URL = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`
 
 // --- Types from Solana RPC response ---

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Connection } from '@solana/web3.js';
 import { addStakingRecord } from '@/lib/stakingDB';
-
+export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {

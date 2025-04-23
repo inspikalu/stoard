@@ -1,6 +1,6 @@
 // app/api/stake-distribution/route.ts
 import { NextResponse } from 'next/server';
-
+export const runtime = 'edge';
 // Fallback data in case API is unavailable
 const FALLBACK_DATA = {
   buckets: [

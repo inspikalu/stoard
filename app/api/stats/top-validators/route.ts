@@ -1,7 +1,7 @@
 // app/api/stats/top-validators/route.ts
 import { NextResponse } from "next/server";
 import { type Validator } from "@/types/validator";
-
+export const runtime = 'edge';
 export const dynamic = "force-dynamic"; // Ensure this is a dynamic route
 
 

@@ -1,7 +1,7 @@
 // app/api/stats/total-validators/route.ts
 
 import { NextResponse } from 'next/server'
-
+export const runtime = 'edge';
 const HELIUS_RPC_URL = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`
 
 export async function GET() {
