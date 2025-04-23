@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import ip3country from "ip3country";
 import { getCountryName } from "@/lib/getCountryname";
-export const runtime = 'edge';
+
 // Initialize the module
 ip3country.init();
 

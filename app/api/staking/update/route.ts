@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { Connection } from "@solana/web3.js";
 import { addStakingRecord } from "@/lib/stakingDB";
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 const HELIUS_RPC_URL = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;

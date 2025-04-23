@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { ValidatorStakeData } from "@/types/validator";
-export const runtime = 'edge';
+
 const HELIUS_RPC = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;
 
 export interface ApiError {
