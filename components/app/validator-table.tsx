@@ -198,7 +198,12 @@ export default function ValidatorTable() {
         uptime: calculateUptime(validator.epochCredits),
       }));
     },
+    // Add these caching options
+    staleTime: 5 * 60 * 1000, // Data is considered fresh for 5 minutes
+    refetchOnWindowFocus: false, // Disable automatic refetching when window regains focus
+    refetchOnMount: false, // Disable automatic refetching on component mount
   });
+  
 
   // Set up unique countries and stake range when data loads
   useEffect(() => {
