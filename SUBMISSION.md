@@ -14,6 +14,15 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 
 ### 2. Technical Implementation
 
+#### Data Storage and Persistence
+- **Primary Database**: Upstash Redis for persistent data storage
+- **Data Structure**: JSON-based records with timestamp tracking
+- **Key Features**: 
+  - Atomic operations for data consistency
+  - Automatic data persistence
+  - High availability and reliability
+  - Edge-compatible implementation
+
 #### Data Integration
 - **Primary Data Source**: Helius RPC for all core blockchain data and real-time metrics
 - **Secondary Data Source**: Solana Beach API (limited usage) - used only once for enhanced validator metadata (names, images, websites)
@@ -26,6 +35,7 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 - **State Management**: React Query for efficient data fetching and caching
 - **UI Components**: Custom components built with modern design principles
 - **Responsive Design**: Mobile-first approach ensuring accessibility across devices
+- **Database**: Upstash Redis for edge-compatible data persistence
 
 ### 3. Key Metrics Tracked
 
@@ -33,7 +43,7 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 - Total staked SOL (via Helius RPC)
 - Active vs. Inactive validators (via Helius RPC)
 - Stake activation and deactivation queues (via Helius RPC)
-- Historical stake trends (via Helius RPC)
+- Historical stake trends (stored in Redis)
 
 #### Validator Performance
 - Validator uptime (via Helius RPC)
@@ -47,32 +57,39 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 ### Data Sources
 1. **Solana Web3.js**: Primary interface for blockchain data
 2. **Helius RPC**: Enhanced RPC endpoint for reliable data fetching
-3. **Custom APIs**: Additional endpoints for specific metrics
+3. **Upstash Redis**: Persistent data storage for historical metrics
+4. **Custom APIs**: Additional endpoints for specific metrics
 
 ### Implementation Details
 
-#### Stake Tracking
+#### Stake Tracking and Storage
 ```typescript
-export async function getDetailedVoteAccounts(): Promise<{
-  totalStake: number;
-  delinquentStake: number;
-  currentStake: number;
-  voteAccountCount: number;
-}> {
-  return withRateLimit(async () => {
-    const voteAccounts = await connection.getVoteAccounts();
-    
-    const currentStake = voteAccounts.current.reduce((sum, account) => sum + account.activatedStake, 0);
-    const delinquentStake = voteAccounts.delinquent.reduce((sum, account) => sum + account.activatedStake, 0);
-    const totalStake = currentStake + delinquentStake;
-    
-    return {
-      totalStake,
-      currentStake,
-      delinquentStake,
-      voteAccountCount: voteAccounts.current.length + voteAccounts.delinquent.length,
-    };
-  });
+type StakingRecord = {
+  timestamp: string;
+  total_staked: number;
+  epoch: number;
+  circulating_supply?: number;
+  non_circulating_supply?: number;
+};
+
+export async function getStakingData(): Promise<StakingRecord[]> {
+  const data = await redis.get(STAKING_KEY) as string;
+  return data ? JSON.parse(data) : [];
+}
+
+export async function addStakingRecord(record: {
+  total_staked: number;
+  epoch: number;
+  circulating_supply?: number;
+  non_circulating_supply?: number;
+}): Promise<StakingRecord[]> {
+  const data = await getStakingData();
+  const newData = [...data, {
+    timestamp: new Date().toISOString(),
+    ...record
+  }];
+  await redis.set(STAKING_KEY, JSON.stringify(newData));
+  return newData;
 }
 ```
 
@@ -116,6 +133,7 @@ const withRateLimit = async <T>(fn: () => Promise<T>, maxRetries = 3): Promise<T
 - Smart caching strategies
 - Optimized re-renders
 - Lazy loading of components
+- Edge-compatible data storage with Upstash Redis
 
 ## Future Enhancements
 
@@ -123,24 +141,28 @@ const withRateLimit = async <T>(fn: () => Promise<T>, maxRetries = 3): Promise<T
    - Machine learning-based predictions
    - Custom alerting system
    - Advanced filtering options
+   - Historical data analysis
 
 2. **Additional Metrics**
    - Validator commission rates
    - Historical performance trends
    - Network health indicators
+   - Enhanced data visualization
 
 3. **User Features**
    - Custom dashboard layouts
    - Export functionality
    - API access for custom integrations
+   - Real-time notifications
 
 ## Conclusion
 
-The Solana Staking Dashboard provides a comprehensive view of the network's staking ecosystem, making it easier for users to understand and monitor the health of the Solana network. With its real-time updates, intuitive interface, and robust technical implementation, it serves as a valuable tool for both casual observers and serious network participants.
+The Solana Staking Dashboard provides a comprehensive view of the network's staking ecosystem, making it easier for users to understand and monitor the health of the Solana network. With its real-time updates, intuitive interface, and robust technical implementation using Upstash Redis for data persistence, it serves as a valuable tool for both casual observers and serious network participants.
 
 ## References
 
 1. [Solana Web3.js Documentation](https://solana-labs.github.io/solana-web3.js/)
 2. [Helius RPC Documentation](https://docs.helius.xyz/)
 3. [Next.js Documentation](https://nextjs.org/docs)
-4. [React Query Documentation](https://tanstack.com/query/latest) 
+4. [React Query Documentation](https://tanstack.com/query/latest)
+5. [Upstash Redis Documentation](https://docs.upstash.com/redis) 
