@@ -21,13 +21,18 @@ A modern, real-time dashboard for monitoring and analyzing the health of Solana'
 - **Styling**: Tailwind CSS
 - **Data Visualization**: Recharts, D3
 - **Blockchain**: Solana Web3.js
-- **API**: Helius RPC
+- **API**: Helius RPC (primary), Solana Beach API (limited usage for validator metadata only)
+
+## Data Sources
+
+The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Beach API is used only once for fetching validator metadata (names, images, websites) to enhance the user experience. All core staking data and network metrics are fetched directly from the Solana blockchain through Helius RPC.
 
 ## Prerequisites
 
 - Node.js 18.x or higher
 - pnpm (recommended) or npm
 - Helius API key
+- Solana Beach API key (optional, for enhanced validator metadata)
 
 ## Getting Started
 

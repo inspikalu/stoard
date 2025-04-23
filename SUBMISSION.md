@@ -15,7 +15,8 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 ### 2. Technical Implementation
 
 #### Data Integration
-- **Helius RPC Integration**: Utilizes Helius RPC for reliable and efficient data fetching
+- **Primary Data Source**: Helius RPC for all core blockchain data and real-time metrics
+- **Secondary Data Source**: Solana Beach API (limited usage) - used only once for enhanced validator metadata (names, images, websites)
 - **Rate Limiting**: Implements smart rate limiting with exponential backoff
 - **Caching Strategy**: 5-minute cache for frequently accessed data to optimize performance
 - **Error Handling**: Robust error handling and fallback mechanisms
@@ -29,16 +30,17 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 ### 3. Key Metrics Tracked
 
 #### Network Health
-- Total staked SOL
-- Active vs. Inactive validators
-- Stake activation and deactivation queues
-- Historical stake trends
+- Total staked SOL (via Helius RPC)
+- Active vs. Inactive validators (via Helius RPC)
+- Stake activation and deactivation queues (via Helius RPC)
+- Historical stake trends (via Helius RPC)
 
 #### Validator Performance
-- Validator uptime
-- Stake distribution
-- Geographic distribution
-- Performance metrics
+- Validator uptime (via Helius RPC)
+- Stake distribution (via Helius RPC)
+- Geographic distribution (via Helius RPC)
+- Performance metrics (via Helius RPC)
+- Enhanced metadata (via Solana Beach API - names, images, websites only)
 
 ## Technical Deep Dive
 
