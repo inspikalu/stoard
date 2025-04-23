@@ -70,6 +70,7 @@ The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Be
 - `CRON_SECRET`: Secret for cron job authentication
 - `HELIUS_RATE_LIMIT_RPS`: Rate limit requests per second (default: 30)
 - `HELIUS_RATE_LIMIT_BURST`: Rate limit burst size (default: 100)
+- `SOLANA_BEACH_API_KEY`: Your Solana Beach API key
 
 ## Available Scripts
 
