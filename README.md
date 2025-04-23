@@ -25,7 +25,7 @@ A modern, real-time dashboard for monitoring and analyzing the health of Solana'
 
 ## Data Sources
 
-The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Beach API is used only once for fetching validator metadata (names, images, websites) to enhance the user experience. All core staking data and network metrics are fetched directly from the Solana blockchain through Helius RPC.
+The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Beach API is used sparingly for fetching validator metadata (names, images, websites) to enhance the user experience. All core staking data and network metrics are fetched directly from the Solana blockchain through Helius RPC.
 
 ## Prerequisites
 
