@@ -1,0 +1,30 @@
+[
+  {
+    "timestamp": "2025-04-22T16:33:58.502Z",
+    "total_staked": 81832508665234370,
+    "epoch": 775,
+    "circulating_supply": 517191855297067200,
+    "non_circulating_supply": 81832508665234380
+  },
+  {
+    "timestamp": "2025-04-22T16:34:56.364Z",
+    "total_staked": 81832508665234430,
+    "epoch": 775,
+    "circulating_supply": 517191854720237200,
+    "non_circulating_supply": 81832508665234380
+  },
+  {
+    "timestamp": "2025-04-22T22:19:06.619Z",
+    "total_staked": 81858462283964860,
+    "epoch": 776,
+    "circulating_supply": 517315865454310200,
+    "non_circulating_supply": 81858462283964850
+  },
+  {
+    "timestamp": "2025-04-22T22:26:16.001Z",
+    "total_staked": 81858462283964800,
+    "epoch": 776,
+    "circulating_supply": 517315860606110200,
+    "non_circulating_supply": 81858462283964850
+  }
+]
