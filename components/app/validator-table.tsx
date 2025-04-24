@@ -41,7 +41,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { fetchValidators, type Validator } from "@/lib/helpers/fetchValidators";
 import { formatNumber } from "@/lib/formatNumber";
 import { calculateUptime } from "@/lib/calculateUptime";
-
+import { toast } from "sonner"; // Adjust import if needed
 
 const columns: ColumnDef<Validator>[] = [
   {
@@ -49,10 +49,19 @@ const columns: ColumnDef<Validator>[] = [
     header: "Vote Pubkey",
     cell: ({ row }) => {
       const pubkey = row.getValue("votePubkey") as string;
+      const handleCopy = async () => {
+        await navigator.clipboard.writeText(pubkey);
+        toast("Vote Public Key copied to clipboard");
+      };
       return (
-        <div className="font-medium truncate max-w-[150px]" title={pubkey}>
+        <button
+          className="font-medium truncate max-w-[150px] hover:underline cursor-pointer"
+          title={pubkey}
+          onClick={handleCopy}
+          type="button"
+        >
           {pubkey.substring(0, 8)}...{pubkey.substring(pubkey.length - 4)}
-        </div>
+        </button>
       );
     },
   },
@@ -61,10 +70,19 @@ const columns: ColumnDef<Validator>[] = [
     header: "Node Pubkey",
     cell: ({ row }) => {
       const pubkey = row.getValue("nodePubkey") as string;
+      const handleCopy = async () => {
+        await navigator.clipboard.writeText(pubkey);
+        toast("Node Pubkey copied to clipboard.");
+      };
       return (
-        <div className="font-medium truncate max-w-[150px]" title={pubkey}>
+        <button
+          className="font-medium truncate max-w-[150px] hover:underline cursor-pointer"
+          title={pubkey}
+          onClick={handleCopy}
+          type="button"
+        >
           {pubkey.substring(0, 8)}...{pubkey.substring(pubkey.length - 4)}
-        </div>
+        </button>
       );
     },
   },
@@ -138,38 +156,6 @@ const columns: ColumnDef<Validator>[] = [
     accessorKey: "country",
     header: "Country",
     cell: ({ row }) => <div>{row.getValue("country")}</div>,
-  },
-  {
-    accessorKey: "performance.percentage",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Performance
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const performance = row.original.performance.percentage;
-      return (
-        <div className="text-right">
-          <Badge
-            variant={
-              performance > 95
-                ? "default"
-                : performance > 90
-                ? "outline"
-                : "destructive"
-            }
-          >
-            {performance}%
-          </Badge>
-        </div>
-      );
-    },
   },
 ];
 
