@@ -2,9 +2,8 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app/app-sidebar";
 import { Providers } from "@/components/providers";
+import { AppNavbar } from "@/components/app/app-navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +14,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
 
 export const metadata: Metadata = {
   title: "Stoard - Solana Staking Dashboard",
@@ -61,17 +61,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <AppSidebar />
-          <main className="p-4 w-full">
-            <SidebarTrigger />
-            {children}
-          </main>
+          <div className="flex flex-col min-h-screen">
+            <AppNavbar />
+            <main className="flex-1 p-4">{children}</main>
+          </div>
         </Providers>
       </body>
     </html>
   );
 }
+
