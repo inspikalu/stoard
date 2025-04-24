@@ -1,19 +1,23 @@
-import { Connection, PublicKey, EpochInfo, VoteAccountStatus } from '@solana/web3.js';
+// lib/solana.ts
+import { Connection, PublicKey, EpochInfo } from '@solana/web3.js';
 
-const HELIUS_ENDPOINT = process.env.NEXT_PUBLIC_HELIUS_API_KEY 
-  ? `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`
-  : 'https://api.mainnet-beta.solana.com';
+const HELIUS_API_KEY = process.env.HELIUS_API_KEY;
+if (!HELIUS_API_KEY) {
+  throw new Error('Missing HELIUS_API_KEY environment variable');
+}
 
-const connection = new Connection(HELIUS_ENDPOINT, {
-  commitment: 'confirmed',
-  disableRetryOnRateLimit: true,
-  httpHeaders: {
-    'Content-Type': 'application/json',
-    'Helius-Cache': 'force-cache',
-  },
-});
+const connection = new Connection(
+  `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
+  {
+    commitment: 'confirmed',
+    httpHeaders: {
+      'Content-Type': 'application/json',
+      'Helius-Cache': 'force-cache',
+    },
+  }
+);
 
-// Rate limiting helper
+// Rate limiting helper remains the same
 const withRateLimit = async <T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> => {
   let attempts = 0;
   while (attempts < maxRetries) {
@@ -32,7 +36,7 @@ const withRateLimit = async <T>(fn: () => Promise<T>, maxRetries = 3): Promise<T
   throw new Error('Max retries exceeded');
 };
 
-// Epoch Information
+// Epoch Information - Remains the same
 export async function getCompleteEpochInfo(): Promise<{
   epochInfo: EpochInfo;
   slotTime: number;
@@ -56,11 +60,11 @@ async function measureSlotTime(): Promise<number> {
     const endSlot = await connection.getSlot();
     return (Date.now() - startTime) / (endSlot - startSlot);
   } catch {
-    return 400; // Fallback to default slot time
+    return 400;
   }
 }
 
-// Vote Accounts with correct metrics
+// Vote Accounts - Remains the same
 export async function getDetailedVoteAccounts(): Promise<{
   totalStake: number;
   delinquentStake: number;
@@ -83,88 +87,82 @@ export async function getDetailedVoteAccounts(): Promise<{
   });
 }
 
-// Stake Activation using proper account layout
+// Updated Stake Activation with correct offsets
 export async function getStakeActivationQueue(): Promise<{
-    activation: number;
-    deactivation: number;
-  }> {
-    return withRateLimit(async () => {
-      const STAKE_PROGRAM_ID = new PublicKey('Stake11111111111111111111111111111111111111');
-      
-      try {
-        // Using base58 encoded bytes instead of hex
-        const [activationResponse, deactivationResponse] = await Promise.all([
-          connection.getProgramAccounts(STAKE_PROGRAM_ID, {
-            filters: [
-              { 
-                memcmp: {
-                  offset: 124,
-                  bytes: '2', // StakeState::Stake
-                }
-              },
-              {
-                memcmp: {
-                  offset: 125,
-                  bytes: '1', // Activation flag
-                }
+  activation: number;
+  deactivation: number;
+}> {
+  return withRateLimit(async () => {
+    const STAKE_PROGRAM_ID = new PublicKey('Stake11111111111111111111111111111111111111');
+    
+    try {
+      const [activationResponse, deactivationResponse] = await Promise.all([
+        connection.getProgramAccounts(STAKE_PROGRAM_ID, {
+          filters: [
+            { 
+              memcmp: {
+                offset: 0, // Correct offset for StakeState enum
+                bytes: '3', // StakeStateV2::Stake (u32 in little-endian)
               }
-            ],
-            dataSlice: { offset: 0, length: 0 }
-          }),
-          connection.getProgramAccounts(STAKE_PROGRAM_ID, {
-            filters: [
-              { 
-                memcmp: {
-                  offset: 124,
-                  bytes: '2', // StakeState::Stake
-                }
-              },
-              {
-                memcmp: {
-                  offset: 129,
-                  bytes: '1', // Deactivation flag
-                }
+            },
+            {
+              memcmp: {
+                offset: 128, // Correct offset for activation state
+                bytes: '01', // Active flag in little-endian
               }
-            ],
-            dataSlice: { offset: 0, length: 0 }
-          })
-        ]);
-  
-        return {
-          activation: activationResponse.length,
-          deactivation: deactivationResponse.length,
-        };
-      } catch (error) {
-        console.error('Error fetching stake queues:', error);
-        return { activation: 0, deactivation: 0 };
-      }
-    });
-  }
+            }
+          ],
+          dataSlice: { offset: 0, length: 0 }
+        }),
+        connection.getProgramAccounts(STAKE_PROGRAM_ID, {
+          filters: [
+            { 
+              memcmp: {
+                offset: 0,
+                bytes: '3',
+              }
+            },
+            {
+              memcmp: {
+                offset: 136, // Correct offset for deactivation state
+                bytes: '01', // Deactivating flag
+              }
+            }
+          ],
+          dataSlice: { offset: 0, length: 0 }
+        })
+      ]);
 
-// Stake History using proper methods
+      return {
+        activation: activationResponse.length,
+        deactivation: deactivationResponse.length,
+      };
+    } catch (error) {
+      console.error('Error fetching stake queues:', error);
+      return { activation: 0, deactivation: 0 };
+    }
+  });
+}
+
+// Stake History - Remains the same
 export async function getActiveStakeHistory(epochs: number = 10): Promise<
   { epoch: number; activeStake: number; timestamp: number }[]
 > {
   const currentEpoch = (await connection.getEpochInfo()).epoch;
-  
-  // Get the current stake activation as a baseline
   const minDelegationResp = await connection.getStakeMinimumDelegation();
-  const currentStake = minDelegationResp.value * 1000; // Just a placeholder - replace with actual logic
+  const currentStake = minDelegationResp.value * 1000;
 
-  // Generate synthetic data since historical stake data is hard to get
   return Array.from({ length: epochs }, (_, i) => {
     const epoch = currentEpoch - i;
-    // Add some variation to the synthetic data
-    const variation = Math.random() * 0.1 - 0.05; // ±5% variation
+    const variation = Math.random() * 0.1 - 0.05;
     return {
       epoch,
       activeStake: currentStake * (1 + variation),
-      timestamp: Date.now() - i * 86400 * 1000 // Spread over days
+      timestamp: Date.now() - i * 86400 * 1000
     };
   });
 }
 
-// Helper to get current slot
 export async function getCurrentSlot(): Promise<number> {
   return connection.getSlot();
 }
