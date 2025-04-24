@@ -34,12 +34,12 @@ function Page() {
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Real-time Data Visualization</h3>
             <p>
-              We've implemented interactive charts and graphs to make complex staking data easily digestible. The dashboard uses Recharts for responsive and interactive data visualization.
+              We've implemented interactive charts and graphs to make complex staking data easily digestible. The dashboard uses Recharts and D3 for responsive and interactive data visualization.
             </p>
 
             <h3 className="text-xl font-semibold">Responsive Architecture</h3>
             <p>
-              Built with Next.js and React, the dashboard is designed to be fast, responsive, and accessible across all devices. We use React Query for efficient data fetching and caching.
+              Built with Next.js 15.3.1 and React, the dashboard is designed to be fast, responsive, and accessible across all devices. We use React Query for efficient data fetching and caching.
             </p>
 
             <h3 className="text-xl font-semibold">Error Handling & Fallbacks</h3>
@@ -59,17 +59,18 @@ function Page() {
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Primary Sources</h3>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Solana RPC Endpoints</li>
-              <li>Helius API for enhanced data access</li>
-              <li>Solana Compass API for validator information</li>
+              <li>Helius RPC for real-time blockchain data</li>
+              <li>Solana Beach API for validator metadata</li>
+              <li>Upstash Redis for data persistence</li>
             </ul>
 
             <h3 className="text-xl font-semibold">Data Types</h3>
             <ul className="list-disc pl-6 space-y-2">
               <li>Total staked SOL</li>
-              <li>Validator distribution</li>
+              <li>Validator distribution and performance</li>
               <li>Stake concentration metrics</li>
               <li>Historical staking trends</li>
+              <li>Network participation data</li>
             </ul>
           </div>
         </CardContent>
@@ -88,8 +89,8 @@ function Page() {
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>Real-time updates for critical metrics</li>
-              <li>5-minute cache for non-critical data</li>
-              <li>Automatic retry mechanism with exponential backoff</li>
+              <li>Smart caching with React Query</li>
+              <li>Rate limiting with exponential backoff</li>
               <li>Fallback data for service interruptions</li>
             </ul>
 
@@ -101,6 +102,7 @@ function Page() {
               <li>Stale-while-revalidate caching strategy</li>
               <li>Background data updates</li>
               <li>Optimistic updates for better UX</li>
+              <li>Efficient data persistence with Upstash Redis</li>
             </ul>
           </div>
         </CardContent>
@@ -126,18 +128,25 @@ function Page() {
                 </a>
               </li>
               <li>
-                <a href="https://solanacompass.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-blue-600 hover:underline">
-                  Solana Compass <ExternalLink className="ml-1 h-4 w-4" />
+                <a href="https://solanabeach.io" target="_blank" rel="noopener noreferrer" className="flex items-center text-blue-600 hover:underline">
+                  Solana Beach <ExternalLink className="ml-1 h-4 w-4" />
+                </a>
+              </li>
+              <li>
+                <a href="https://upstash.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-blue-600 hover:underline">
+                  Upstash Redis <ExternalLink className="ml-1 h-4 w-4" />
                 </a>
               </li>
             </ul>
 
             <h3 className="text-xl font-semibold">Technology Stack</h3>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Next.js for the frontend framework</li>
-              <li>React Query for data fetching</li>
-              <li>Recharts for data visualization</li>
+              <li>Next.js 15.3.1 for the frontend framework</li>
+              <li>React Query for data fetching and caching</li>
+              <li>Radix UI for accessible components</li>
+              <li>Recharts and D3 for data visualization</li>
               <li>Tailwind CSS for styling</li>
+              <li>Upstash Redis for data persistence</li>
             </ul>
           </div>
         </CardContent>
