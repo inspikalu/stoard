@@ -69,10 +69,18 @@ The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Be
 
 ## Environment Variables
 
-- `HELIUS_API_KEY`: Your Helius API key
-- `SOLANA_BEACH_API_KEY`: Your Solana Beach API key
+- `HELIUS_API_KEY`: Your Helius API key for blockchain data
+- `CRON_SECRET`: Secret for cron job authentication
 - `HELIUS_RATE_LIMIT_RPS`: Rate limit requests per second (default: 30)
 - `HELIUS_RATE_LIMIT_BURST`: Rate limit burst size (default: 100)
+- `SOLANA_BEACH_API_KEY`: Your Solana Beach API key for validator metadata
+- `stoard_KV_URL`: Your Upstash Redis URL
+- `stoard_KV_REST_API_READ_ONLY_TOKEN`: Your Upstash Redis read-only token
+- `stoard_REDIS_URL`: Your Upstash Redis URL
+- `stoard_KV_REST_API_TOKEN`: Your Upstash Redis API token
+- `stoard_KV_REST_API_URL`: Your Upstash Redis REST API URL
+- `UPSTASH_REDIS_REST_URL`: Your Upstash Redis REST URL
+- `UPSTASH_REDIS_REST_TOKEN`: Your Upstash Redis REST token
 
 ## Available Scripts
 
