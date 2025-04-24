@@ -3,12 +3,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchStakeConcforGiniCoeff } from "@/lib/helpers/fetchStakeConcforGiniCoeff";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ResponsiveContainer,
@@ -34,7 +29,7 @@ export function StakeConcentrationDashboard() {
     queryFn: fetchStakeConcforGiniCoeff,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
-
+  console.log("Stake Data: ", stakeData);
   if (isError) {
     return (
       <div className="p-4 text-red-500">
@@ -64,7 +59,8 @@ export function StakeConcentrationDashboard() {
                 {stakeData?.giniCoefficient.toFixed(4)}
               </p>
               <p className="text-sm text-muted-foreground mt-2">
-                Measures inequality (0 = perfect equality, 1 = maximum inequality)
+                Measures inequality (0 = perfect equality, 1 = maximum
+                inequality)
               </p>
             </CardContent>
           </Card>
@@ -75,7 +71,9 @@ export function StakeConcentrationDashboard() {
             </CardHeader>
             <CardContent>
               <p className="text-3xl font-bold">
-                {stakeData?.currentStakeDistribution.totalValidators.toLocaleString()}
+                {stakeData?.currentStats
+                  ? stakeData.currentStats.totalValidators.toLocaleString()
+                  : "-"}
               </p>
               <p className="text-sm text-muted-foreground mt-2">
                 Total active validators
@@ -92,13 +90,17 @@ export function StakeConcentrationDashboard() {
                 <p className="text-lg">
                   Avg:{" "}
                   <span className="font-semibold">
-                    {stakeData?.currentStakeDistribution.averageStake.toLocaleString()}
+                    {stakeData?.currentStats
+                      ? stakeData.currentStats.average.toLocaleString()
+                      : "-"}
                   </span>
                 </p>
                 <p className="text-lg">
                   Median:{" "}
                   <span className="font-semibold">
-                    {stakeData?.currentStakeDistribution.medianStake.toLocaleString()}
+                    {stakeData?.currentStats
+                      ? stakeData.currentStats.median.toLocaleString()
+                      : "-"}
                   </span>
                 </p>
               </div>

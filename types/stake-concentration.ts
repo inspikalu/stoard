@@ -7,14 +7,14 @@ export interface LorenzCurvePoint {
   export interface CurrentStakeDistribution {
     totalValidators: number;
     totalStake: number;
-    averageStake: number;
-    medianStake: number;
+    average: number;
+    median: number;
   }
   
   export interface StakeConcentrationData {
     giniCoefficient: number;
     lorenzCurve: LorenzCurvePoint[];
-    currentStakeDistribution: CurrentStakeDistribution;
+    currentStats: CurrentStakeDistribution;
     historicalData: any; // You might want to type this more precisely
     timestamp: string;
   }
