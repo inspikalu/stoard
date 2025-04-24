@@ -10,7 +10,8 @@ A modern, real-time dashboard for monitoring and analyzing the health of Solana'
 - Epoch information and slot time tracking
 - Responsive design with dark/light mode support
 - Rate-limited API calls with exponential backoff
-- Efficient data caching and state management
+- Efficient data caching with React Query
+- Historical data storage with Upstash Redis
 
 ## Tech Stack
 
@@ -21,18 +22,19 @@ A modern, real-time dashboard for monitoring and analyzing the health of Solana'
 - **Styling**: Tailwind CSS
 - **Data Visualization**: Recharts, D3
 - **Blockchain**: Solana Web3.js
-- **API**: Helius RPC (primary), Solana Beach API (limited usage for validator metadata only)
+- **Data Storage**: Upstash Redis
+- **API**: Helius RPC (primary), Solana Beach API (validator metadata)
 
 ## Data Sources
 
-The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Beach API is used sparingly for fetching validator metadata (names, images, websites) to enhance the user experience. All core staking data and network metrics are fetched directly from the Solana blockchain through Helius RPC.
+The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Beach API is used for fetching validator metadata (names, images, websites) to enhance the user experience. All core staking data and network metrics are fetched directly from the Solana blockchain through Helius RPC.
 
 ## Prerequisites
 
 - Node.js 18.x or higher
 - pnpm (recommended) or npm
 - Helius API key
-- Solana Beach API key (optional, for enhanced validator metadata)
+- Solana Beach API key (for validator metadata)
 
 ## Getting Started
 
@@ -52,9 +54,10 @@ The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Be
    cp .env.example .env
    ```
 
-4. Add your Helius API key to the `.env` file:
+4. Add your API keys to the `.env` file:
    ```
    HELIUS_API_KEY=your_api_key_here
+   SOLANA_BEACH_API_KEY=your_api_key_here
    ```
 
 5. Start the development server:
@@ -67,10 +70,9 @@ The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Be
 ## Environment Variables
 
 - `HELIUS_API_KEY`: Your Helius API key
-- `CRON_SECRET`: Secret for cron job authentication
+- `SOLANA_BEACH_API_KEY`: Your Solana Beach API key
 - `HELIUS_RATE_LIMIT_RPS`: Rate limit requests per second (default: 30)
 - `HELIUS_RATE_LIMIT_BURST`: Rate limit burst size (default: 100)
-- `SOLANA_BEACH_API_KEY`: Your Solana Beach API key
 
 ## Available Scripts
 
@@ -84,6 +86,11 @@ The dashboard primarily uses Helius RPC for real-time blockchain data. Solana Be
 ```
 ├── app/                 # Next.js app directory
 │   ├── api/            # API routes
+│   │   ├── solana-compass/  # Validator metadata
+│   │   ├── participation/   # Network participation data
+│   │   ├── stats/          # Network statistics
+│   │   ├── staking/        # Staking data
+│   │   └── stake-distribution/ # Distribution data
 │   ├── components/     # Page components
 │   └── lib/           # Utility functions
 ├── components/         # Shared components
@@ -111,3 +118,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Helius RPC](https://docs.helius.xyz/)
 - [Next.js](https://nextjs.org/)
 - [React Query](https://tanstack.com/query/latest)
+- [Upstash Redis](https://docs.upstash.com/redis)

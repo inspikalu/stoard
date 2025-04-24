@@ -21,21 +21,20 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
   - Atomic operations for data consistency
   - Automatic data persistence
   - High availability and reliability
-  - Edge-compatible implementation
 
 #### Data Integration
 - **Primary Data Source**: Helius RPC for all core blockchain data and real-time metrics
-- **Secondary Data Source**: Solana Beach API (limited usage) - used only once for enhanced validator metadata (names, images, websites)
+- **Secondary Data Source**: Solana Beach API for validator metadata (names, images, websites)
 - **Rate Limiting**: Implements smart rate limiting with exponential backoff
-- **Caching Strategy**: 5-minute cache for frequently accessed data to optimize performance
+- **Caching Strategy**: React Query for efficient data fetching and caching
 - **Error Handling**: Robust error handling and fallback mechanisms
 
 #### Architecture
 - **Frontend**: Next.js with TypeScript for type safety and better developer experience
 - **State Management**: React Query for efficient data fetching and caching
-- **UI Components**: Custom components built with modern design principles
+- **UI Components**: Radix UI components with custom styling
 - **Responsive Design**: Mobile-first approach ensuring accessibility across devices
-- **Database**: Upstash Redis for edge-compatible data persistence
+- **Database**: Upstash Redis for data persistence
 
 ### 3. Key Metrics Tracked
 
@@ -50,7 +49,7 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 - Stake distribution (via Helius RPC)
 - Geographic distribution (via Helius RPC)
 - Performance metrics (via Helius RPC)
-- Enhanced metadata (via Solana Beach API - names, images, websites only)
+- Enhanced metadata (via Solana Beach API)
 
 ## Technical Deep Dive
 
@@ -58,7 +57,7 @@ The Solana Staking Dashboard is a modern, real-time monitoring tool designed to 
 1. **Solana Web3.js**: Primary interface for blockchain data
 2. **Helius RPC**: Enhanced RPC endpoint for reliable data fetching
 3. **Upstash Redis**: Persistent data storage for historical metrics
-4. **Custom APIs**: Additional endpoints for specific metrics
+4. **Solana Beach API**: Validator metadata enrichment
 
 ### Implementation Details
 
@@ -133,12 +132,11 @@ const withRateLimit = async <T>(fn: () => Promise<T>, maxRetries = 3): Promise<T
 - Smart caching strategies
 - Optimized re-renders
 - Lazy loading of components
-- Edge-compatible data storage with Upstash Redis
+- Data persistence with Upstash Redis
 
 ## Future Enhancements
 
 1. **Advanced Analytics**
-   - Machine learning-based predictions
    - Custom alerting system
    - Advanced filtering options
    - Historical data analysis
